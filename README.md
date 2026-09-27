@@ -50,6 +50,10 @@ npx serve .
 
 (A busca de capas e o salvamento pelo GitHub funcionam normalmente em `localhost`.)
 
+## Atualizando o site
+
+Os arquivos em `assets/` são carregados com `?v=2` no final do link (ex.: `assets/admin.js?v=2`) só pra forçar o navegador a buscar a versão nova em vez de usar uma copiada em cache. Toda vez que `style.css`, `common.js`, `app.js` ou `admin.js` mudar, aumente esse número nos dois HTMLs (`index.html` e `admin.html`) — senão quem já visitou o site pode continuar vendo a versão antiga por um tempo.
+
 ## Configuração
 
 O repositório de destino está definido em [`assets/common.js`](assets/common.js) (`GITHUB_OWNER`, `GITHUB_REPO`, `GITHUB_BRANCH`). Só precisa mudar se você renomear o repositório ou o dono.
