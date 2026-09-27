@@ -79,12 +79,53 @@ function renderAno(ano) {
   const lidosDoAno = (DADOS.read || []).filter((b) => anoDe(b.finishedAt) === ano);
   const abandonadosDoAno = (DADOS.abandoned || []).filter((b) => anoDe(b.when) === ano);
 
-  trocarComFade(["stats-grid", "read-grid", "charts-grid", "abandoned-list"], () => {
+  trocarComFade(["stats-grid", "author-highlight-card", "read-grid", "charts-grid", "authors-list", "abandoned-list"], () => {
     renderStats(lidosDoAno);
+    renderAutorFavorito(lidosDoAno);
     renderReadGrid(lidosDoAno);
     renderCharts(lidosDoAno);
+    renderAuthorsList(lidosDoAno);
     renderAbandonedList(abandonadosDoAno);
   });
+}
+
+function contarAutores(lidos) {
+  const contagem = new Map();
+  lidos.forEach((b) => {
+    const nome = (b.author || "").trim();
+    if (!nome) return;
+    contagem.set(nome, (contagem.get(nome) || 0) + 1);
+  });
+  return [...contagem.entries()]
+    .map(([author, count]) => ({ author, count }))
+    .sort((a, b) => b.count - a.count || a.author.localeCompare(b.author, "pt-BR"));
+}
+
+function juntarComE(itens) {
+  if (itens.length === 0) return "";
+  if (itens.length === 1) return itens[0];
+  return `${itens.slice(0, -1).join(", ")} e ${itens[itens.length - 1]}`;
+}
+
+function renderAutorFavorito(lidos) {
+  const ranking = contarAutores(lidos);
+  const el = document.getElementById("author-highlight-name");
+  if (!ranking.length) { el.textContent = "—"; return; }
+  const maior = ranking[0].count;
+  const favoritos = ranking.filter((r) => r.count === maior).map((r) => r.author);
+  el.innerHTML = `${escapeHtml(juntarComE(favoritos))}<span class="sub">${maior} livro${maior > 1 ? "s" : ""} lido${maior > 1 ? "s" : ""} no ano</span>`;
+}
+
+function renderAuthorsList(lidos) {
+  const ranking = contarAutores(lidos);
+  const el = document.getElementById("authors-list");
+  if (!ranking.length) { el.innerHTML = `<div class="empty-state">Nenhum autor lido ainda neste ano.</div>`; return; }
+  el.innerHTML = ranking.map((r, i) => `
+    <div class="simple-row" style="animation-delay:${Math.min(i, 14) * 30}ms">
+      <div class="title">${escapeHtml(r.author)}</div>
+      <span class="tag">${r.count} livro${r.count > 1 ? "s" : ""}</span>
+    </div>
+  `).join("");
 }
 
 function renderStats(lidos) {

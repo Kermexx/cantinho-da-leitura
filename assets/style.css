@@ -220,6 +220,10 @@ svg { display: block; }
 }
 .mini-card .value { margin-top: 8px; font-size: 15px; font-family: "Fraunces", Georgia, serif; }
 
+.author-highlight { margin-top: 16px; text-align: center; }
+.author-highlight .value { font-size: 20px; }
+.author-highlight .value .sub { display: block; margin-top: 4px; font-size: 12.5px; font-family: "Inter", sans-serif; color: var(--ink-muted); }
+
 /* Stats */
 .stats-grid {
   display: grid;

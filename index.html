@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=2">
+<link rel="stylesheet" href="assets/style.css?v=3">
 </head>
 <body>
 <header class="site-header reveal">
@@ -57,6 +57,11 @@
 
   <div class="stats-grid fade-swap" id="stats-grid"></div>
 
+  <div class="card mini-card author-highlight fade-swap" id="author-highlight-card">
+    <div class="label">Autor favorito no ano</div>
+    <div class="value" id="author-highlight-name">—</div>
+  </div>
+
   <div class="year-tabs" id="year-tabs"></div>
 
   <h2 class="section-title">Lidos <span class="rule"></span><span class="count" id="read-count"></span></h2>
@@ -72,6 +77,9 @@
       <div id="chart-ratings"></div>
     </div>
   </div>
+
+  <h2 class="section-title">Por autor <span class="rule"></span></h2>
+  <div class="simple-list fade-swap" id="authors-list"></div>
 
   <h2 class="section-title">Abandonados <span class="rule"></span><span class="count" id="abandoned-count"></span></h2>
   <div class="simple-list fade-swap" id="abandoned-list"></div>
@@ -89,6 +97,6 @@
 </footer>
 
 <script src="assets/common.js?v=2"></script>
-<script src="assets/app.js?v=2"></script>
+<script src="assets/app.js?v=3"></script>
 </body>
 </html>
