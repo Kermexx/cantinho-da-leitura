@@ -109,7 +109,13 @@
         <div class="field-row">
           <div class="field">
             <label>Quando terminou</label>
-            <input type="text" id="lidos-quando" placeholder="2026-09-27, 2026-09 ou 2026">
+            <div class="date-field">
+              <input type="text" id="lidos-quando" placeholder="27/09/2026, 09/2026 ou 2026">
+              <button type="button" class="date-pick-btn" data-target="lidos-quando" aria-label="Escolher no calendário">
+                <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg>
+              </button>
+              <input type="date" id="lidos-quando-picker" class="date-picker-hidden" tabindex="-1">
+            </div>
           </div>
           <div class="field checkbox-row" style="margin-top:22px;">
             <input type="checkbox" id="lidos-nacional">
@@ -130,7 +136,16 @@
           <div class="field"><label>Título</label><input type="text" id="aband-titulo"></div>
           <div class="field"><label>Autor(a)</label><input type="text" id="aband-autor"></div>
         </div>
-        <div class="field"><label>Quando</label><input type="text" id="aband-quando" placeholder="2026-09 ou 2026"></div>
+        <div class="field">
+          <label>Quando</label>
+          <div class="date-field">
+            <input type="text" id="aband-quando" placeholder="27/09/2026, 09/2026 ou 2026">
+            <button type="button" class="date-pick-btn" data-target="aband-quando" aria-label="Escolher no calendário">
+              <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg>
+            </button>
+            <input type="date" id="aband-quando-picker" class="date-picker-hidden" tabindex="-1">
+          </div>
+        </div>
         <button class="btn" id="btn-salvar-aband">Adicionar aos abandonados</button>
         <button class="btn secondary" id="btn-cancelar-aband" style="display:none;">Cancelar edição</button>
       </div>

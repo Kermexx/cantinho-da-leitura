@@ -529,6 +529,37 @@ footer.site-footer {
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(-6px); }
 .toast.error { background: var(--bad); color: #fff; }
 
+.date-field { position: relative; }
+.date-field input[type="text"] { padding-right: 42px; }
+.date-pick-btn {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  color: var(--ink-muted);
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+.date-pick-btn:hover { color: var(--accent); background: var(--paper-3); }
+.date-picker-hidden {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  width: 32px;
+  height: 32px;
+  opacity: 0;
+  pointer-events: none;
+  border: none;
+  padding: 0;
+}
+
 .lookup-row { display: flex; gap: 10px; align-items: flex-end; }
 .lookup-row .field { flex: 1; margin-bottom: 0; }
 .lookup-row .btn { white-space: nowrap; margin-bottom: 1px; }

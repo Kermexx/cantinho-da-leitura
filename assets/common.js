@@ -33,6 +33,40 @@ function formatarDataParcial(valor) {
   return String(d.ano);
 }
 
+function paraExibicaoBR(valorIso) {
+  const d = parseDataParcial(valorIso);
+  if (!d) return "";
+  if (d.dia && d.mes) return `${String(d.dia).padStart(2, "0")}/${String(d.mes).padStart(2, "0")}/${d.ano}`;
+  if (d.mes) return `${String(d.mes).padStart(2, "0")}/${d.ano}`;
+  return String(d.ano);
+}
+
+function paraIsoParcial(valorBr) {
+  const s = String(valorBr || "").trim();
+  if (!s) return "";
+
+  let m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (m) {
+    const dia = Number(m[1]), mes = Number(m[2]), ano = Number(m[3]);
+    if (mes < 1 || mes > 12) return null;
+    const teste = new Date(ano, mes - 1, dia);
+    if (teste.getFullYear() !== ano || teste.getMonth() !== mes - 1 || teste.getDate() !== dia) return null;
+    return `${ano}-${String(mes).padStart(2, "0")}-${String(dia).padStart(2, "0")}`;
+  }
+
+  m = s.match(/^(\d{1,2})\/(\d{4})$/);
+  if (m) {
+    const mes = Number(m[1]), ano = Number(m[2]);
+    if (mes < 1 || mes > 12) return null;
+    return `${ano}-${String(mes).padStart(2, "0")}`;
+  }
+
+  m = s.match(/^(\d{4})$/);
+  if (m) return m[1];
+
+  return null;
+}
+
 function anoDe(valor) {
   const d = parseDataParcial(valor);
   return d ? d.ano : null;

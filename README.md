@@ -36,6 +36,8 @@ No formulário de "Lidos", o botão **Buscar capa** consulta a [Open Library](ht
 }
 ```
 
+Por baixo dos panos as datas ficam em `AAAA-MM-DD` (ou só `AAAA-MM`/`AAAA` quando o dia ou o mês não são informados) para poder ordenar certinho. Na página de edição você digita ou escolhe no calendário no formato brasileiro (`DD/MM/AAAA`) — a conversão é automática.
+
 Editar esse arquivo direto pelo GitHub também funciona (interface web do GitHub) — a página de edição é só um jeito mais confortável de fazer a mesma coisa.
 
 ## Rodar localmente
