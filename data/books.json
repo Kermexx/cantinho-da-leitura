@@ -25,12 +25,118 @@
       "rating": 4,
       "pages": 393,
       "national": false,
-      "language": "",
-      "finishedAt": "2026",
+      "language": "Português",
+      "finishedAt": "2026-01-10",
+      "cover": "https://covers.openlibrary.org/b/id/12646537-M.jpg"
+    },
+    {
+      "id": "20ae6911-ec46-4eca-8089-e13a327e1810",
+      "title": "Em chamas - Jogos Vorazes",
+      "author": "Suzanne Collins",
+      "rating": 3,
+      "pages": 407,
+      "national": false,
+      "language": "Português",
+      "finishedAt": "2026-01-13",
+      "cover": "https://covers.openlibrary.org/b/id/12646539-M.jpg"
+    },
+    {
+      "id": "45eda643-7347-4edd-bdd1-531d96e3f1bb",
+      "title": "A Esperança - Jogos Vorazes",
+      "author": "Suzanne Collins",
+      "rating": 5,
+      "pages": 412,
+      "national": false,
+      "language": "Português",
+      "finishedAt": "2026-01-17",
+      "cover": "https://covers.openlibrary.org/b/id/12646459-M.jpg"
+    },
+    {
+      "id": "cdc0af60-4fea-4087-b7ce-3d04ce81486a",
+      "title": "A Sociedade do Anel - Livro 1",
+      "author": "J.R.R Tolkien",
+      "rating": 3,
+      "pages": 248,
+      "national": false,
+      "language": "Português",
+      "finishedAt": "2026-01-21",
+      "cover": "https://covers.openlibrary.org/b/id/14627060-M.jpg"
+    },
+    {
+      "id": "89b96267-fac7-453f-a4d6-949dc77912c1",
+      "title": "A Sociedade do Anel - Livro 2",
+      "author": "J.R.R Tolkien",
+      "rating": 4,
+      "pages": 214,
+      "national": false,
+      "language": "Português",
+      "finishedAt": "2026-01-23",
+      "cover": "https://covers.openlibrary.org/b/id/14627060-M.jpg"
+    },
+    {
+      "id": "ee38b59f-27b2-4cfa-8810-cdd81257ca57",
+      "title": "O Mercado de Ações em 25 Episódios",
+      "author": "Paulo Portinho",
+      "rating": 5,
+      "pages": 240,
+      "national": true,
+      "language": "Português",
+      "finishedAt": "2026-01-24",
       "cover": ""
+    },
+    {
+      "id": "ec4076ae-4760-4d65-99d6-8a08cb01b19f",
+      "title": "As Duas Torres - Livro 1",
+      "author": "J.R.R Tolkien",
+      "rating": 3,
+      "pages": 208,
+      "national": false,
+      "language": "Português",
+      "finishedAt": "2026-01-27",
+      "cover": "https://covers.openlibrary.org/b/id/14627564-M.jpg"
+    },
+    {
+      "id": "75db8faa-0be6-4709-8817-fcd6c54f69c5",
+      "title": "O Investidor Inteligente",
+      "author": "Benjamin Graham",
+      "rating": 4,
+      "pages": 629,
+      "national": false,
+      "language": "Português",
+      "finishedAt": "2026-02-13",
+      "cover": "https://covers.openlibrary.org/b/id/36434-M.jpg"
+    },
+    {
+      "id": "01fb48bd-04f4-4cfa-bc90-bd7be69fc391",
+      "title": "Verity",
+      "author": "Collen Hoover",
+      "rating": 3,
+      "pages": 312,
+      "national": false,
+      "language": "Português",
+      "finishedAt": "2026-03-14",
+      "cover": "https://covers.openlibrary.org/b/id/8747160-M.jpg"
+    },
+    {
+      "id": "f1e4ee58-28bc-4e7d-bc99-84dd3fff27b2",
+      "title": "A Paciente Silenciosa",
+      "author": "Alex Michaelides",
+      "rating": 5,
+      "pages": 348,
+      "national": false,
+      "language": "Português",
+      "finishedAt": "2026-05-01",
+      "cover": "https://covers.openlibrary.org/b/id/9407338-M.jpg"
     }
   ],
-  "abandoned": [],
+  "abandoned": [
+    {
+      "id": "56ac210f-c541-41b1-be73-c78697b22016",
+      "title": "As duas torres - Livro 2",
+      "author": "J.R.R Tolkien",
+      "when": "2026-02-03"
+    }
+  ],
   "wantToRead": [],
   "wishlist": []
 }
