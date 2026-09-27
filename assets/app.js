@@ -94,13 +94,10 @@ function contarAutores(lidos) {
   lidos.forEach((b) => {
     const nome = (b.author || "").trim();
     if (!nome) return;
-    const atual = contagem.get(nome) || { count: 0, pages: 0 };
-    atual.count += 1;
-    atual.pages += Number(b.pages) || 0;
-    contagem.set(nome, atual);
+    contagem.set(nome, (contagem.get(nome) || 0) + 1);
   });
   return [...contagem.entries()]
-    .map(([author, v]) => ({ author, count: v.count, pages: v.pages }))
+    .map(([author, count]) => ({ author, count }))
     .sort((a, b) => b.count - a.count || a.author.localeCompare(b.author, "pt-BR"));
 }
 
@@ -115,10 +112,8 @@ function renderAutorFavorito(lidos) {
   const el = document.getElementById("author-highlight-name");
   if (!ranking.length) { el.textContent = "—"; return; }
   const maior = ranking[0].count;
-  const favoritos = ranking.filter((r) => r.count === maior);
-  const paginas = favoritos.reduce((s, r) => s + r.pages, 0);
-  const nomes = favoritos.map((r) => r.author);
-  el.innerHTML = `${escapeHtml(juntarComE(nomes))}<span class="sub">${maior} livro${maior > 1 ? "s" : ""} · ${paginas.toLocaleString("pt-BR")} páginas no ano</span>`;
+  const favoritos = ranking.filter((r) => r.count === maior).map((r) => r.author);
+  el.innerHTML = `${escapeHtml(juntarComE(favoritos))}<span class="sub">${maior} livro${maior > 1 ? "s" : ""} lido${maior > 1 ? "s" : ""} no ano</span>`;
 }
 
 function renderAuthorsList(lidos) {
@@ -128,10 +123,7 @@ function renderAuthorsList(lidos) {
   el.innerHTML = ranking.map((r, i) => `
     <div class="simple-row" style="animation-delay:${Math.min(i, 14) * 30}ms">
       <div class="title">${escapeHtml(r.author)}</div>
-      <div class="author-stats">
-        <span class="tag">${r.count} livro${r.count > 1 ? "s" : ""}</span>
-        <span class="tag">${r.pages.toLocaleString("pt-BR")} pág.</span>
-      </div>
+      <span class="tag">${r.count} livro${r.count > 1 ? "s" : ""}</span>
     </div>
   `).join("");
 }

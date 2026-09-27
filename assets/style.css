@@ -342,7 +342,6 @@ svg { display: block; }
 .simple-row .title { font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 14.5px; }
 .simple-row .author { color: var(--ink-2); font-size: 13px; }
 .simple-row .when { color: var(--ink-muted); font-size: 12.5px; white-space: nowrap; font-variant-numeric: tabular-nums; }
-.author-stats { display: flex; gap: 6px; flex-shrink: 0; font-variant-numeric: tabular-nums; }
 
 .empty-state {
   color: var(--ink-muted);
