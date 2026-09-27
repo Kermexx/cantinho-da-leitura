@@ -164,9 +164,30 @@ function salvarProxima() {
 
 /* ---- Lidos ---- */
 
-function atualizarStarPicker() {
-  document.querySelectorAll("#lidos-star-picker .star").forEach((star) => {
-    star.classList.toggle("on", Number(star.dataset.v) <= notaSelecionada);
+function montarStarPicker() {
+  const el = document.getElementById("lidos-star-picker");
+  el.innerHTML = "";
+  for (let v = 1; v <= 5; v++) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.dataset.v = v;
+    btn.innerHTML = `<svg class="star-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="${STAR_PATH}"/></svg>`;
+    btn.addEventListener("click", () => {
+      notaSelecionada = v;
+      atualizarStarPicker(v);
+    });
+    el.appendChild(btn);
+  }
+}
+
+function atualizarStarPicker(justSetValue) {
+  document.querySelectorAll("#lidos-star-picker button").forEach((btn) => {
+    const v = Number(btn.dataset.v);
+    const on = v <= notaSelecionada;
+    const svg = btn.querySelector("svg");
+    svg.setAttribute("fill", on ? "currentColor" : "none");
+    svg.classList.toggle("on", on);
+    btn.classList.toggle("just-set", justSetValue === v);
   });
 }
 
@@ -251,11 +272,12 @@ function salvarLido() {
 function renderLidosList() {
   const el = document.getElementById("lidos-list");
   const lista = [...(ESTADO.dados.read || [])].sort((a, b) => String(b.finishedAt || "").localeCompare(String(a.finishedAt || "")));
-  el.innerHTML = lista.map((b) => `
-    <div class="entry-row">
+  el.innerHTML = lista.map((b, i) => `
+    <div class="entry-row" style="animation-delay:${Math.min(i, 12) * 30}ms">
       <div class="info">
-        <div class="t">${escapeHtml(b.title)} ${b.rating ? `<span style="color:var(--star-on)">${estrelas(b.rating)}</span>` : ""}</div>
-        <div class="s">${escapeHtml(b.author || "")}${b.finishedAt ? " · " + escapeHtml(formatarDataParcial(b.finishedAt)) : ""}</div>
+        <span class="t">${escapeHtml(b.title)}</span>
+        ${b.rating ? starIconsHtml(b.rating) : ""}
+        <span class="s">${escapeHtml(b.author || "")}${b.finishedAt ? " · " + escapeHtml(formatarDataParcial(b.finishedAt)) : ""}</span>
       </div>
       <button class="btn secondary small" onclick="editarLido('${b.id}')">editar</button>
       <button class="btn danger small" onclick="excluirLido('${b.id}')">excluir</button>
@@ -268,6 +290,7 @@ async function buscarCapa() {
   const autor = document.getElementById("lidos-autor").value.trim();
   if (!titulo) { showToast("Digite o título antes de buscar.", true); return; }
   const btn = document.getElementById("btn-buscar-capa");
+  const btnOriginal = btn.innerHTML;
   btn.disabled = true; btn.textContent = "Buscando…";
   try {
     const r = await buscarNaOpenLibrary(titulo, autor);
@@ -285,7 +308,7 @@ async function buscarCapa() {
   } catch (e) {
     showToast("Erro ao buscar na Open Library.", true);
   } finally {
-    btn.disabled = false; btn.textContent = "🔎 Buscar capa";
+    btn.disabled = false; btn.innerHTML = btnOriginal;
   }
 }
 
@@ -336,11 +359,11 @@ function salvarAband() {
 function renderAbandList() {
   const el = document.getElementById("aband-list");
   const lista = [...(ESTADO.dados.abandoned || [])];
-  el.innerHTML = lista.map((b) => `
-    <div class="entry-row">
+  el.innerHTML = lista.map((b, i) => `
+    <div class="entry-row" style="animation-delay:${Math.min(i, 12) * 30}ms">
       <div class="info">
-        <div class="t">${escapeHtml(b.title)}</div>
-        <div class="s">${escapeHtml(b.author || "")}${b.when ? " · " + escapeHtml(formatarDataParcial(b.when)) : ""}</div>
+        <span class="t">${escapeHtml(b.title)}</span>
+        <span class="s">${escapeHtml(b.author || "")}${b.when ? " · " + escapeHtml(formatarDataParcial(b.when)) : ""}</span>
       </div>
       <button class="btn secondary small" onclick="editarAband('${b.id}')">editar</button>
       <button class="btn danger small" onclick="excluirAband('${b.id}')">excluir</button>
@@ -391,9 +414,9 @@ function salvarQuero() {
 function renderQueroList() {
   const el = document.getElementById("quero-list");
   const lista = [...(ESTADO.dados.wantToRead || [])];
-  el.innerHTML = lista.map((b) => `
-    <div class="entry-row">
-      <div class="info"><div class="t">${escapeHtml(b.title)}</div><div class="s">${escapeHtml(b.when || "")}</div></div>
+  el.innerHTML = lista.map((b, i) => `
+    <div class="entry-row" style="animation-delay:${Math.min(i, 12) * 30}ms">
+      <div class="info"><span class="t">${escapeHtml(b.title)}</span><span class="s">${escapeHtml(b.when || "")}</span></div>
       <button class="btn secondary small" onclick="editarQuero('${b.id}')">editar</button>
       <button class="btn danger small" onclick="excluirQuero('${b.id}')">excluir</button>
     </div>
@@ -443,9 +466,9 @@ function salvarComprar() {
 function renderComprarList() {
   const el = document.getElementById("comprar-list");
   const lista = [...(ESTADO.dados.wishlist || [])];
-  el.innerHTML = lista.map((b) => `
-    <div class="entry-row">
-      <div class="info"><div class="t">${escapeHtml(b.title)}</div><div class="s">${escapeHtml(b.author || "")}</div></div>
+  el.innerHTML = lista.map((b, i) => `
+    <div class="entry-row" style="animation-delay:${Math.min(i, 12) * 30}ms">
+      <div class="info"><span class="t">${escapeHtml(b.title)}</span><span class="s">${escapeHtml(b.author || "")}</span></div>
       <button class="btn secondary small" onclick="editarComprar('${b.id}')">editar</button>
       <button class="btn danger small" onclick="excluirComprar('${b.id}')">excluir</button>
     </div>
@@ -475,9 +498,7 @@ function wireHandlers() {
   document.getElementById("btn-salvar-atual").addEventListener("click", salvarAtual);
   document.getElementById("btn-salvar-proxima").addEventListener("click", salvarProxima);
 
-  document.querySelectorAll("#lidos-star-picker .star").forEach((star) => {
-    star.addEventListener("click", () => { notaSelecionada = Number(star.dataset.v); atualizarStarPicker(); });
-  });
+  montarStarPicker();
   document.getElementById("btn-buscar-capa").addEventListener("click", buscarCapa);
   document.getElementById("btn-salvar-lido").addEventListener("click", salvarLido);
   document.getElementById("btn-cancelar-lido").addEventListener("click", prepararNovoLido);

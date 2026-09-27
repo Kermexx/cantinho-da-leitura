@@ -1,4 +1,4 @@
-# 📖 Cantinho da Leitura
+# Cantinho da Leitura
 
 Site simples para registrar os livros lidos, abandonados, a leitura atual e as listas de "pretendo ler" e "desejo comprar" — sem depender do Notion.
 
@@ -14,7 +14,7 @@ Site simples para registrar os livros lidos, abandonados, a leitura atual e as l
 4. Use as abas (Lendo agora, Lidos, Abandonados, Pretendo ler, Desejo comprar) para adicionar, editar ou excluir itens.
 5. Cada "salvar" faz um commit neste repositório. O site (GitHub Pages) recarrega sozinho em cerca de 1 minuto.
 
-No formulário de "Lidos", o botão **🔎 Buscar capa** consulta a [Open Library](https://openlibrary.org) pelo título/autor e preenche capa, páginas e idioma automaticamente quando encontra o livro.
+No formulário de "Lidos", o botão **Buscar capa** consulta a [Open Library](https://openlibrary.org) pelo título/autor e preenche capa, páginas e idioma automaticamente quando encontra o livro.
 
 > O token fica salvo apenas no `localStorage` do navegador usado para editar. Não use a página de edição em computadores públicos/compartilhados. Para revogar o acesso a qualquer momento: [github.com/settings/tokens](https://github.com/settings/tokens).
 

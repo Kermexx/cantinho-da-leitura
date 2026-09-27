@@ -5,14 +5,17 @@ async function iniciar() {
   try {
     DADOS = await carregarDadosPublicados();
   } catch (e) {
-    document.getElementById("quote").textContent = "Não consegui carregar os dados (data/books.json).";
+    document.getElementById("quote-text").textContent = "Não consegui carregar os dados (data/books.json).";
     console.error(e);
     return;
   }
 
-  document.getElementById("quote").textContent = DADOS.meta?.quote?.text
-    ? `"${DADOS.meta.quote.text}" — ${DADOS.meta.quote.author || ""}`
-    : "";
+  if (DADOS.meta?.quote?.text) {
+    document.getElementById("quote-text").textContent = `"${DADOS.meta.quote.text}"`;
+    document.getElementById("quote-author").textContent = DADOS.meta.quote.author || "";
+  } else {
+    document.getElementById("quote").style.display = "none";
+  }
 
   renderLeituraAtual();
   renderProximaLeitura();
@@ -28,17 +31,14 @@ function renderLeituraAtual() {
   const cr = DADOS.currentlyReading || {};
   document.getElementById("reading-title").textContent = cr.title || "Nada no momento";
   document.getElementById("reading-author").textContent = cr.author || "";
-  const coverEl = document.getElementById("reading-cover");
-  if (cr.cover) {
-    coverEl.innerHTML = `<img src="${escapeHtml(cr.cover)}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:6px;">`;
-  }
+  document.getElementById("reading-cover").innerHTML = coverTileHtml(cr.title || "?", cr.cover);
   const pr = Number(cr.pagesRead) || 0;
   const tot = Number(cr.totalPages) || 0;
   const pct = tot > 0 ? Math.min(100, Math.round((pr / tot) * 100)) : 0;
   document.getElementById("reading-progress-fill").style.width = pct + "%";
   document.getElementById("reading-progress-label").textContent = tot > 0
-    ? `${pr} / ${tot} páginas (${pct}%)`
-    : (cr.title ? "" : "");
+    ? `${pr} / ${tot} páginas · ${pct}%`
+    : "";
 }
 
 function renderProximaLeitura() {
@@ -55,19 +55,36 @@ function renderYearTabs(anos) {
     const b = document.createElement("button");
     b.className = "year-tab" + (ano === ANO_ATUAL ? " active" : "");
     b.textContent = ano;
-    b.onclick = () => { ANO_ATUAL = ano; renderAno(ano); [...el.children].forEach(c => c.classList.remove("active")); b.classList.add("active"); };
+    b.onclick = () => {
+      if (ano === ANO_ATUAL) return;
+      ANO_ATUAL = ano;
+      [...el.children].forEach((c) => c.classList.remove("active"));
+      b.classList.add("active");
+      renderAno(ano);
+    };
     el.appendChild(b);
   });
+}
+
+function trocarComFade(ids, atualizar) {
+  const els = ids.map((id) => document.getElementById(id));
+  els.forEach((el) => el.classList.add("fading"));
+  setTimeout(() => {
+    atualizar();
+    els.forEach((el) => el.classList.remove("fading"));
+  }, 160);
 }
 
 function renderAno(ano) {
   const lidosDoAno = (DADOS.read || []).filter((b) => anoDe(b.finishedAt) === ano);
   const abandonadosDoAno = (DADOS.abandoned || []).filter((b) => anoDe(b.when) === ano);
 
-  renderStats(lidosDoAno);
-  renderReadGrid(lidosDoAno);
-  renderCharts(lidosDoAno);
-  renderAbandonedList(abandonadosDoAno);
+  trocarComFade(["stats-grid", "read-grid", "charts-grid", "abandoned-list"], () => {
+    renderStats(lidosDoAno);
+    renderReadGrid(lidosDoAno);
+    renderCharts(lidosDoAno);
+    renderAbandonedList(abandonadosDoAno);
+  });
 }
 
 function renderStats(lidos) {
@@ -78,7 +95,9 @@ function renderStats(lidos) {
   const nacionais = lidos.filter((b) => b.national).length;
   const pctNacional = livros ? Math.round((nacionais / livros) * 100) : 0;
 
-  document.getElementById("avg-rating").textContent = notaMedia ? `${estrelas(Math.round(notaMedia))} (${notaMedia.toFixed(1)})` : "—";
+  document.getElementById("avg-rating").innerHTML = notaMedia
+    ? `${starIconsHtml(Math.round(notaMedia))} <span style="color:var(--ink-muted);font-size:12.5px;">(${notaMedia.toFixed(1)})</span>`
+    : "—";
 
   const grid = document.getElementById("stats-grid");
   grid.innerHTML = "";
@@ -97,26 +116,24 @@ function renderStats(lidos) {
 }
 
 function renderReadGrid(lidos) {
-  document.getElementById("read-count").textContent = lidos.length ? `(${lidos.length})` : "";
+  document.getElementById("read-count").textContent = lidos.length ? `${lidos.length}` : "";
   const grid = document.getElementById("read-grid");
   if (!lidos.length) {
     grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">Nenhum livro lido ainda neste ano.</div>`;
     return;
   }
   const ordenados = [...lidos].sort((a, b) => String(b.finishedAt || "").localeCompare(String(a.finishedAt || "")));
-  grid.innerHTML = ordenados.map((b) => `
-    <div class="book-card">
-      <div class="cover-wrap">
-        ${b.cover ? `<img src="${escapeHtml(b.cover)}" alt="">` : `<span class="fallback">📘</span>`}
-      </div>
+  grid.innerHTML = ordenados.map((b, i) => `
+    <div class="book-card" style="animation-delay:${Math.min(i, 14) * 35}ms">
+      <div class="cover-wrap">${coverTileHtml(b.title, b.cover)}</div>
       <div class="info">
         <div class="title">${escapeHtml(b.title)}</div>
         <div class="author">${escapeHtml(b.author)}</div>
-        <div class="stars">${estrelas(b.rating)}</div>
+        ${starIconsHtml(b.rating)}
         <div class="meta-row">
           ${b.pages ? `<span class="tag">${b.pages} pág.</span>` : ""}
-          ${b.national === true ? `<span class="tag">🇧🇷 nacional</span>` : ""}
-          ${b.national === false ? `<span class="tag">🌍 internacional</span>` : ""}
+          ${b.national === true ? `<span class="tag">Nacional</span>` : ""}
+          ${b.national === false ? `<span class="tag">Estrangeiro</span>` : ""}
           ${b.language ? `<span class="tag">${escapeHtml(b.language)}</span>` : ""}
         </div>
       </div>
@@ -125,11 +142,11 @@ function renderReadGrid(lidos) {
 }
 
 function renderAbandonedList(lista) {
-  document.getElementById("abandoned-count").textContent = lista.length ? `(${lista.length})` : "";
+  document.getElementById("abandoned-count").textContent = lista.length ? `${lista.length}` : "";
   const el = document.getElementById("abandoned-list");
-  if (!lista.length) { el.innerHTML = `<div class="empty-state">Nenhum livro abandonado neste ano — boa!</div>`; return; }
-  el.innerHTML = lista.map((b) => `
-    <div class="simple-row">
+  if (!lista.length) { el.innerHTML = `<div class="empty-state">Nenhum livro abandonado neste ano.</div>`; return; }
+  el.innerHTML = lista.map((b, i) => `
+    <div class="simple-row" style="animation-delay:${i * 35}ms">
       <div><div class="title">${escapeHtml(b.title)}</div><div class="author">${escapeHtml(b.author || "")}</div></div>
       <div class="when">${escapeHtml(formatarDataParcial(b.when))}</div>
     </div>
@@ -139,8 +156,8 @@ function renderAbandonedList(lista) {
 function renderListasSemAno() {
   const want = DADOS.wantToRead || [];
   const wantEl = document.getElementById("want-list");
-  wantEl.innerHTML = want.length ? want.map((b) => `
-    <div class="simple-row">
+  wantEl.innerHTML = want.length ? want.map((b, i) => `
+    <div class="simple-row" style="animation-delay:${i * 35}ms">
       <div class="title">${escapeHtml(b.title)}</div>
       <div class="when">${escapeHtml(b.when || "")}</div>
     </div>
@@ -148,8 +165,8 @@ function renderListasSemAno() {
 
   const wish = DADOS.wishlist || [];
   const wishEl = document.getElementById("wishlist-list");
-  wishEl.innerHTML = wish.length ? wish.map((b) => `
-    <div class="simple-row">
+  wishEl.innerHTML = wish.length ? wish.map((b, i) => `
+    <div class="simple-row" style="animation-delay:${i * 35}ms">
       <div><div class="title">${escapeHtml(b.title)}</div><div class="author">${escapeHtml(b.author || "")}</div></div>
     </div>
   `).join("") : `<div class="empty-state">Nada na lista ainda.</div>`;
@@ -177,7 +194,7 @@ function renderBarChart(containerEl, items) {
     const x = padL + i * (barW + gap);
     const h = (it.value / max) * plotH;
     const y = padT + (plotH - h);
-    bars += `<path class="bar" d="${roundedTopBarPath(x, y, barW, h, 3)}" data-idx="${i}"></path>`;
+    bars += `<path class="bar" style="animation-delay:${i * 28}ms" d="${roundedTopBarPath(x, y, barW, h, 3)}" data-idx="${i}"></path>`;
     if (it.value > 0 && i === peakIdx) {
       bars += `<text x="${x + barW / 2}" y="${y - 5}" text-anchor="middle" font-weight="700">${it.value}</text>`;
     }
@@ -195,7 +212,7 @@ function renderBarChart(containerEl, items) {
   const tooltip = containerEl.querySelector(".viz-tooltip");
   containerEl.querySelectorAll(".bar").forEach((el) => {
     const it = items[Number(el.dataset.idx)];
-    el.addEventListener("mouseenter", (ev) => {
+    el.addEventListener("mouseenter", () => {
       tooltip.textContent = `${it.tooltipLabel || it.label}: ${it.value}`;
       tooltip.classList.add("show");
     });
@@ -216,7 +233,7 @@ function renderCharts(lidos) {
   renderBarChart(document.getElementById("chart-months"), porMes);
 
   const porNota = [1, 2, 3, 4, 5].map((n) => ({
-    label: "★".repeat(n),
+    label: String(n),
     tooltipLabel: `${n} estrela${n > 1 ? "s" : ""}`,
     value: lidos.filter((b) => Math.round(Number(b.rating)) === n).length
   }));

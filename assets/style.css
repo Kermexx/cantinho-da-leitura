@@ -156,6 +156,11 @@ svg { display: block; }
   transition: border-color 0.15s, color 0.15s, transform 0.15s;
 }
 .top-link:hover { color: var(--accent); border-color: var(--accent); transform: translateY(-1px); }
+@media (max-width: 640px) {
+  .site-header { padding-top: 22px; }
+  .top-link { position: static; display: inline-flex; margin-bottom: 20px; }
+  .site-header .brand h1 { font-size: 25px; }
+}
 
 /* Cards */
 .card {
@@ -535,4 +540,43 @@ footer.site-footer {
   font-size: 13px;
   color: var(--ink-muted);
   margin-bottom: 6px;
+}
+
+/* ---- Motion ---- */
+.fade-swap { transition: opacity 0.16s ease; }
+.fade-swap.fading { opacity: 0; }
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.85); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .reveal { animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .book-card, .simple-row, .entry-row {
+    animation: fadeSlideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .tab-panel.active { animation: fadeSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .toast.show { animation: none; }
+  .star-picker button.just-set .star-ico { animation: popIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+  .viz-root .bar {
+    transform-box: fill-box;
+    transform-origin: bottom;
+    animation: barGrow 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @keyframes barGrow {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

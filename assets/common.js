@@ -38,11 +38,30 @@ function anoDe(valor) {
   return d ? d.ano : null;
 }
 
-function estrelas(nota, max = 5) {
+const STAR_PATH = "M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z";
+
+function starIconsHtml(nota, max = 5) {
   const cheias = Math.round(Number(nota) || 0);
-  let out = "";
-  for (let i = 1; i <= max; i++) out += i <= cheias ? "★" : "☆";
+  let out = `<span class="star-row" role="img" aria-label="${cheias} de ${max} estrelas">`;
+  for (let i = 1; i <= max; i++) {
+    const on = i <= cheias;
+    out += `<svg class="star-ico${on ? " on" : ""}" viewBox="0 0 24 24" fill="${on ? "currentColor" : "none"}" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="${STAR_PATH}"/></svg>`;
+  }
+  out += "</span>";
   return out;
+}
+
+function hashTile(str, buckets = 5) {
+  let h = 0;
+  const s = String(str || "");
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return (h % buckets) + 1;
+}
+
+function coverTileHtml(title, cover) {
+  if (cover) return `<img src="${escapeHtml(cover)}" alt="">`;
+  const letter = (String(title || "?").trim().charAt(0) || "?").toUpperCase();
+  return `<div class="mono-tile mono-${hashTile(title)}"><span class="mono-letter">${escapeHtml(letter)}</span></div>`;
 }
 
 function escapeHtml(str) {
