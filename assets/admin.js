@@ -109,6 +109,7 @@ async function conectar(token) {
 }
 
 function sair() {
+  if (!confirm("Sair e apagar o token salvo neste navegador?")) return;
   localStorage.removeItem("cantinho_gh_token");
   TOKEN = null;
   ESTADO = null;
