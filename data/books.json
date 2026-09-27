@@ -127,6 +127,17 @@
       "language": "Português",
       "finishedAt": "2026-05-01",
       "cover": "https://covers.openlibrary.org/b/id/9407338-M.jpg"
+    },
+    {
+      "id": "1d8aef4a-d3fb-421d-af51-edf7329d4e60",
+      "title": "Apologia de Socrates",
+      "author": "Platão",
+      "rating": 5,
+      "pages": 50,
+      "national": false,
+      "language": "Português",
+      "finishedAt": "2026-09-27",
+      "cover": ""
     }
   ],
   "abandoned": [
