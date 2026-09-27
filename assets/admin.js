@@ -218,7 +218,7 @@ function editarLido(id) {
   document.getElementById("lidos-autor").value = item.author || "";
   document.getElementById("lidos-paginas").value = item.pages || "";
   document.getElementById("lidos-idioma").value = item.language || "";
-  document.getElementById("lidos-quando").value = paraExibicaoBR(item.finishedAt);
+  document.getElementById("lidos-quando").value = /^\d{4}-\d{2}-\d{2}$/.test(item.finishedAt || "") ? item.finishedAt : "";
   document.getElementById("lidos-nacional").checked = !!item.national;
   capaEncontrada = item.cover || "";
   if (capaEncontrada) {
@@ -243,10 +243,7 @@ function excluirLido(id) {
 
 function salvarLido() {
   const titulo = document.getElementById("lidos-titulo").value.trim();
-  const quandoTexto = document.getElementById("lidos-quando").value.trim();
-  const quandoIso = paraIsoParcial(quandoTexto);
   if (!titulo) { showToast("Dá um título pro livro :)", true); return; }
-  if (quandoTexto && quandoIso === null) { showToast("Data inválida. Use DD/MM/AAAA, MM/AAAA ou AAAA.", true); return; }
 
   const obj = {
     id: EDITANDO.lidos || gerarId(),
@@ -256,7 +253,7 @@ function salvarLido() {
     pages: Number(document.getElementById("lidos-paginas").value) || 0,
     national: document.getElementById("lidos-nacional").checked,
     language: document.getElementById("lidos-idioma").value.trim(),
-    finishedAt: quandoIso || "",
+    finishedAt: document.getElementById("lidos-quando").value,
     cover: capaEncontrada
   };
 
@@ -332,7 +329,7 @@ function editarAband(id) {
   document.getElementById("abandonados-form-titulo").textContent = "Editar livro abandonado";
   document.getElementById("aband-titulo").value = item.title || "";
   document.getElementById("aband-autor").value = item.author || "";
-  document.getElementById("aband-quando").value = paraExibicaoBR(item.when);
+  document.getElementById("aband-quando").value = /^\d{4}-\d{2}-\d{2}$/.test(item.when || "") ? item.when : "";
   document.getElementById("btn-salvar-aband").textContent = "Salvar alterações";
   document.getElementById("btn-cancelar-aband").style.display = "";
 }
@@ -344,11 +341,8 @@ function excluirAband(id) {
 }
 function salvarAband() {
   const titulo = document.getElementById("aband-titulo").value.trim();
-  const quandoTexto = document.getElementById("aband-quando").value.trim();
-  const quandoIso = paraIsoParcial(quandoTexto);
   if (!titulo) { showToast("Dá um título pro livro :)", true); return; }
-  if (quandoTexto && quandoIso === null) { showToast("Data inválida. Use DD/MM/AAAA, MM/AAAA ou AAAA.", true); return; }
-  const obj = { id: EDITANDO.aband || gerarId(), title: titulo, author: document.getElementById("aband-autor").value.trim(), when: quandoIso || "" };
+  const obj = { id: EDITANDO.aband || gerarId(), title: titulo, author: document.getElementById("aband-autor").value.trim(), when: document.getElementById("aband-quando").value };
   if (!ESTADO.dados.abandoned) ESTADO.dados.abandoned = [];
   if (EDITANDO.aband) {
     const idx = ESTADO.dados.abandoned.findIndex((b) => b.id === EDITANDO.aband);
@@ -478,21 +472,6 @@ function renderComprarList() {
   `).join("") || `<div class="empty-state">Nada na lista ainda.</div>`;
 }
 
-function wireDatePicker(textId, pickerId) {
-  const texto = document.getElementById(textId);
-  const picker = document.getElementById(pickerId);
-  const btn = document.querySelector(`.date-pick-btn[data-target="${textId}"]`);
-  btn.addEventListener("click", () => {
-    if (texto.value) { const iso = paraIsoParcial(texto.value); if (iso && iso.length === 10) picker.value = iso; }
-    try { picker.showPicker(); } catch (e) { picker.focus(); }
-  });
-  picker.addEventListener("change", () => {
-    if (!picker.value) return;
-    const [ano, mes, dia] = picker.value.split("-");
-    texto.value = `${dia}/${mes}/${ano}`;
-  });
-}
-
 /* ---- Wiring ---- */
 
 function wireTabs() {
@@ -517,8 +496,6 @@ function wireHandlers() {
   document.getElementById("btn-salvar-proxima").addEventListener("click", salvarProxima);
 
   montarStarPicker();
-  wireDatePicker("lidos-quando", "lidos-quando-picker");
-  wireDatePicker("aband-quando", "aband-quando-picker");
   document.getElementById("btn-buscar-capa").addEventListener("click", buscarCapa);
   document.getElementById("btn-salvar-lido").addEventListener("click", salvarLido);
   document.getElementById("btn-cancelar-lido").addEventListener("click", prepararNovoLido);
