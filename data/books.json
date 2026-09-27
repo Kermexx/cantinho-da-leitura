@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "title": "Cantinho da Leitura",
+    "quote": {
+      "text": "A leitura é, provavelmente, uma outra maneira de estar em um lugar.",
+      "author": "José Saramago"
+    }
+  },
+  "currentlyReading": {
+    "title": "A essência dos ensinamentos de Buda",
+    "author": "Thich Nhat Hanh",
+    "pagesRead": 37,
+    "totalPages": 628,
+    "cover": ""
+  },
+  "nextUp": {
+    "title": "",
+    "author": ""
+  },
+  "read": [
+    {
+      "id": "seed-1",
+      "title": "Jogos Vorazes",
+      "author": "Suzanne Collins",
+      "rating": 4,
+      "pages": 393,
+      "national": false,
+      "language": "",
+      "finishedAt": "2026",
+      "cover": ""
+    }
+  ],
+  "abandoned": [],
+  "wantToRead": [],
+  "wishlist": []
+}

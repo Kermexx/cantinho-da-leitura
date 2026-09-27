@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editar — Cantinho da Leitura</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📖</text></svg>">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="admin-link" href="index.html">← ver o site</a>
+  <div class="brand"><span class="icon">✎</span><h1>Editar leituras</h1></div>
+</header>
+
+<main class="wrap admin-wrap">
+
+  <section id="token-panel" class="card token-panel">
+    <h3>Conectar com o GitHub</h3>
+    <p>Para salvar as alterações direto no site, crie um token de acesso pessoal (fine-grained) só para este repositório:</p>
+    <ol>
+      <li>Abra <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a></li>
+      <li>Em <b>Repository access</b>, escolha <b>Only select repositories</b> → <code>cantinho-da-leitura</code></li>
+      <li>Em <b>Permissions → Repository permissions</b>, defina <b>Contents</b> como <b>Read and write</b></li>
+      <li>Clique em <b>Generate token</b> e copie (começa com <code>github_pat_</code>)</li>
+    </ol>
+    <div class="field">
+      <label for="token-input">Cole o token aqui</label>
+      <input type="password" id="token-input" placeholder="github_pat_...">
+    </div>
+    <button class="btn" id="btn-conectar">Conectar</button>
+    <p id="token-erro" style="color:var(--bad);font-size:13px;"></p>
+    <p style="font-size:12.5px;color:var(--ink-muted);">O token fica salvo só no seu navegador (localStorage) e é usado apenas para salvar no seu repositório. Não use esta página em computadores públicos. Você pode revogar o token quando quiser nas configurações do GitHub.</p>
+  </section>
+
+  <section id="admin-area" style="display:none">
+    <div class="session-bar">
+      <span id="session-info">conectado</span>
+      <button class="btn secondary small" id="btn-sair">sair</button>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="atual">Lendo agora</button>
+      <button class="tab-btn" data-tab="lidos">Lidos</button>
+      <button class="tab-btn" data-tab="abandonados">Abandonados</button>
+      <button class="tab-btn" data-tab="quero-ler">Pretendo ler</button>
+      <button class="tab-btn" data-tab="comprar">Desejo comprar</button>
+    </div>
+
+    <!-- Lendo agora -->
+    <div class="tab-panel active" id="panel-atual">
+      <div class="card">
+        <h3 style="margin-bottom:14px;">Leitura atual</h3>
+        <div class="field-row">
+          <div class="field"><label>Título</label><input type="text" id="atual-titulo"></div>
+          <div class="field"><label>Autor(a)</label><input type="text" id="atual-autor"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Páginas lidas</label><input type="number" id="atual-paginas-lidas" min="0"></div>
+          <div class="field"><label>Total de páginas</label><input type="number" id="atual-paginas-total" min="0"></div>
+        </div>
+        <button class="btn" id="btn-salvar-atual">Salvar leitura atual</button>
+      </div>
+      <div class="card" style="margin-top:16px;">
+        <h3 style="margin-bottom:14px;">Próxima leitura</h3>
+        <div class="field-row">
+          <div class="field"><label>Título</label><input type="text" id="proxima-titulo"></div>
+          <div class="field"><label>Autor(a)</label><input type="text" id="proxima-autor"></div>
+        </div>
+        <button class="btn" id="btn-salvar-proxima">Salvar próxima leitura</button>
+      </div>
+    </div>
+
+    <!-- Lidos -->
+    <div class="tab-panel" id="panel-lidos">
+      <div class="card">
+        <h3 id="lidos-form-titulo" style="margin-bottom:14px;">Adicionar livro lido</h3>
+        <div class="lookup-row">
+          <div class="field"><label>Título</label><input type="text" id="lidos-titulo"></div>
+          <div class="field"><label>Autor(a)</label><input type="text" id="lidos-autor"></div>
+          <button class="btn secondary" id="btn-buscar-capa" type="button">🔎 Buscar capa</button>
+        </div>
+        <div class="field" id="lidos-capa-preview" style="display:none;">
+          <label>Capa encontrada</label>
+          <img id="lidos-capa-img" style="width:60px;border-radius:4px;border:1px solid var(--border);">
+        </div>
+        <div class="field">
+          <label>Nota</label>
+          <div class="star-picker" id="lidos-star-picker">
+            <span class="star" data-v="1">★</span><span class="star" data-v="2">★</span><span class="star" data-v="3">★</span><span class="star" data-v="4">★</span><span class="star" data-v="5">★</span>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Páginas</label><input type="number" id="lidos-paginas" min="0"></div>
+          <div class="field"><label>Idioma</label><input type="text" id="lidos-idioma" placeholder="Português"></div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Quando terminou</label>
+            <input type="text" id="lidos-quando" placeholder="2026-09-27, 2026-09 ou 2026">
+          </div>
+          <div class="field checkbox-row" style="margin-top:22px;">
+            <input type="checkbox" id="lidos-nacional">
+            <label for="lidos-nacional" style="margin:0;">Autor(a) nacional</label>
+          </div>
+        </div>
+        <button class="btn" id="btn-salvar-lido">Adicionar aos lidos</button>
+        <button class="btn secondary" id="btn-cancelar-lido" style="display:none;">Cancelar edição</button>
+      </div>
+      <div class="entry-list" id="lidos-list"></div>
+    </div>
+
+    <!-- Abandonados -->
+    <div class="tab-panel" id="panel-abandonados">
+      <div class="card">
+        <h3 id="abandonados-form-titulo" style="margin-bottom:14px;">Adicionar livro abandonado</h3>
+        <div class="field-row">
+          <div class="field"><label>Título</label><input type="text" id="aband-titulo"></div>
+          <div class="field"><label>Autor(a)</label><input type="text" id="aband-autor"></div>
+        </div>
+        <div class="field"><label>Quando</label><input type="text" id="aband-quando" placeholder="2026-09 ou 2026"></div>
+        <button class="btn" id="btn-salvar-aband">Adicionar aos abandonados</button>
+        <button class="btn secondary" id="btn-cancelar-aband" style="display:none;">Cancelar edição</button>
+      </div>
+      <div class="entry-list" id="aband-list"></div>
+    </div>
+
+    <!-- Pretendo ler -->
+    <div class="tab-panel" id="panel-quero-ler">
+      <div class="card">
+        <h3 id="quero-form-titulo" style="margin-bottom:14px;">Adicionar à lista</h3>
+        <div class="field-row">
+          <div class="field"><label>Título</label><input type="text" id="quero-titulo"></div>
+          <div class="field"><label>Quando (mês/ano previsto)</label><input type="text" id="quero-quando" placeholder="outubro"></div>
+        </div>
+        <button class="btn" id="btn-salvar-quero">Adicionar</button>
+        <button class="btn secondary" id="btn-cancelar-quero" style="display:none;">Cancelar edição</button>
+      </div>
+      <div class="entry-list" id="quero-list"></div>
+    </div>
+
+    <!-- Desejo comprar -->
+    <div class="tab-panel" id="panel-comprar">
+      <div class="card">
+        <h3 id="comprar-form-titulo" style="margin-bottom:14px;">Adicionar à lista de compras</h3>
+        <div class="field-row">
+          <div class="field"><label>Título</label><input type="text" id="comprar-titulo"></div>
+          <div class="field"><label>Autor(a)</label><input type="text" id="comprar-autor"></div>
+        </div>
+        <button class="btn" id="btn-salvar-comprar">Adicionar</button>
+        <button class="btn secondary" id="btn-cancelar-comprar" style="display:none;">Cancelar edição</button>
+      </div>
+      <div class="entry-list" id="comprar-list"></div>
+    </div>
+
+  </section>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script src="assets/common.js"></script>
+<script src="assets/admin.js"></script>
+</body>
+</html>

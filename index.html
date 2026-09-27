@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cantinho da Leitura</title>
+<meta name="description" content="Os livros que eu li, estou lendo e quero ler.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📖</text></svg>">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="admin-link" href="admin.html">✎ editar</a>
+  <div class="brand"><span class="icon">📖</span><h1>Cantinho da Leitura</h1></div>
+  <p class="quote" id="quote">Carregando…</p>
+</header>
+
+<main class="wrap">
+
+  <section class="hero-grid">
+    <div class="card reading-card">
+      <div class="cover" id="reading-cover">📕</div>
+      <div>
+        <div class="label" id="reading-label">Lendo agora</div>
+        <h3 id="reading-title">—</h3>
+        <div class="author" id="reading-author"></div>
+        <div class="progress-track"><div class="progress-fill" id="reading-progress-fill" style="width:0%"></div></div>
+        <div class="progress-label" id="reading-progress-label"></div>
+      </div>
+    </div>
+    <div class="side-cards">
+      <div class="card mini-card">
+        <div class="label">Próxima leitura</div>
+        <div class="value" id="next-up">—</div>
+      </div>
+      <div class="card mini-card">
+        <div class="label">Nota média no ano</div>
+        <div class="value" id="avg-rating">—</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="stats-grid" id="stats-grid"></div>
+
+  <div class="year-tabs" id="year-tabs"></div>
+
+  <h2 class="section-title">Lidos <span class="count" id="read-count"></span></h2>
+  <div class="book-grid" id="read-grid"></div>
+
+  <div class="charts-grid">
+    <div class="viz-root viz-wrap">
+      <h4>Livros por mês</h4>
+      <div id="chart-months"></div>
+    </div>
+    <div class="viz-root viz-wrap">
+      <h4>Distribuição de notas</h4>
+      <div id="chart-ratings"></div>
+    </div>
+  </div>
+
+  <h2 class="section-title">Abandonados <span class="count" id="abandoned-count"></span></h2>
+  <div class="simple-list" id="abandoned-list"></div>
+
+  <h2 class="section-title">Pretendo ler</h2>
+  <div class="simple-list" id="want-list"></div>
+
+  <h2 class="section-title">Desejo comprar</h2>
+  <div class="simple-list" id="wishlist-list"></div>
+
+</main>
+
+<footer class="site-footer">
+  <p>feito com 💛 para guardar cada leitura</p>
+</footer>
+
+<script src="assets/common.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
